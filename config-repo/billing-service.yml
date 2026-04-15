@@ -1,0 +1,30 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: billing-service
+  datasource:
+    url: jdbc:h2:mem:billingdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+billing:
+  tariff:
+    peak: 0.20
+    off-peak: 0.10
+anomaly-service:
+  url: http://localhost:8084
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true

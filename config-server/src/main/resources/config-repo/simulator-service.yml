@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: simulator-service
+simulator:
+  interval-ms: 5000
+  house-count: 10
+ingestion-service:
+  url: http://localhost:8082
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
