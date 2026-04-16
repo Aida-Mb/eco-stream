@@ -7,15 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="config-server" />
-        <module name="simulator-service" />
-        <module name="api-gateway" />
-        <module name="anomaly-service" />
-        <module name="eureka-server" />
-        <module name="ingestion-service" />
-        <module name="billing-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="anomaly-service" target="17" />
+      <module name="api-gateway" target="17" />
+      <module name="billing-service" target="17" />
+      <module name="config-server" target="17" />
+      <module name="eco-stream" target="1.5" />
+      <module name="eureka-server" target="17" />
+      <module name="ingestion-service" target="17" />
+      <module name="simulator-service" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

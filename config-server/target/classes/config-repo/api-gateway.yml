@@ -1,0 +1,30 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: simulator-service
+          uri: lb://simulator-service
+          predicates:
+            - Path=/api/simulator/**
+        - id: ingestion-service
+          uri: lb://ingestion-service
+          predicates:
+            - Path=/api/ingest/**
+        - id: billing-service
+          uri: lb://billing-service
+          predicates:
+            - Path=/api/billing/**
+        - id: anomaly-service
+          uri: lb://anomaly-service
+          predicates:
+            - Path=/api/anomaly/**
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
