@@ -1,0 +1,14 @@
+com\ecostream\anomaly\model\SeverityLevel.class
+com\ecostream\anomaly\dto\AnomalyAlertDto.class
+com\ecostream\anomaly\exception\AnomalyNotFoundException.class
+com\ecostream\anomaly\dto\AnalysisResultDto$AnalysisResultDtoBuilder.class
+com\ecostream\anomaly\model\AnomalyAlert.class
+com\ecostream\anomaly\dto\AnomalyAlertDto$AnomalyAlertDtoBuilder.class
+com\ecostream\anomaly\repository\AnomalyAlertRepository.class
+com\ecostream\anomaly\service\AnomalyService.class
+com\ecostream\anomaly\dto\AnalysisResultDto.class
+com\ecostream\anomaly\dto\EnergyReadingDto$EnergyReadingDtoBuilder.class
+com\ecostream\anomaly\exception\GlobalExceptionHandler.class
+com\ecostream\anomaly\model\AnomalyAlert$AnomalyAlertBuilder.class
+com\ecostream\anomaly\dto\EnergyReadingDto.class
+com\ecostream\anomaly\controller\AnomalyController.class

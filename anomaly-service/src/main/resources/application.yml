@@ -2,4 +2,39 @@ spring:
   application:
     name: anomaly-service
   config:
-    import: "configserver:http://localhost:8888"
+    import: "optional:configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:h2:mem:anomalydb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+server:
+  port: 8084
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+anomaly:
+  threshold:
+    high: 1000.0
+    medium: 500.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
