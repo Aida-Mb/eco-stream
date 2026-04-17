@@ -4,7 +4,7 @@ spring:
   application:
     name: billing-service
   datasource:
-    url: jdbc:h2:mem:billingdb
+    url: jdbc:h2:file:./data/billing-db
     driver-class-name: org.h2.Driver
     username: sa
     password:

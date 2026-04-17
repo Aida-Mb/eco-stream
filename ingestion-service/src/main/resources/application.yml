@@ -3,3 +3,11 @@ spring:
     name: ingestion-service
   config:
     import: "configserver:http://localhost:8888"
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:h2:file:./data/ingestion-db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:

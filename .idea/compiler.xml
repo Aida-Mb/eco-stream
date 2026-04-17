@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-<<<<<<< HEAD
         <module name="api-gateway" />
         <module name="config-server" />
         <module name="anomaly-service" />
@@ -28,7 +27,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/hibernate/orm/hibernate-jpamodelgen/6.4.4.Final/hibernate-jpamodelgen-6.4.4.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/hibernate/orm/hibernate-core/6.4.4.Final/hibernate-core-6.4.4.Final.jar" />
@@ -52,15 +50,6 @@
           <entry name="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.5.0.Final/jboss-logging-3.5.0.Final.jar" />
         </processorPath>
         <module name="ingestion-service" />
-=======
-        <module name="config-server" />
-        <module name="simulator-service" />
-        <module name="api-gateway" />
-        <module name="anomaly-service" />
-        <module name="eureka-server" />
-        <module name="ingestion-service" />
-        <module name="billing-service" />
->>>>>>> b6a2c0ec48237a5326208a3973459b78fef1790f
       </profile>
     </annotationProcessing>
   </component>
