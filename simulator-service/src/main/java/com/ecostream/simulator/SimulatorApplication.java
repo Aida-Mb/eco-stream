@@ -3,11 +3,13 @@ package com.ecostream.simulator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableDiscoveryClient   // S'enregistre sur Eureka
-@EnableScheduling        // Active les tâches planifiées (envoi périodique)
+@EnableScheduling
+@EnableAsync
 public class SimulatorApplication {
 
     public static void main(String[] args) {
