@@ -1,0 +1,11 @@
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\dto\AnalysisResultDto.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\dto\EnergyReadingDto.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\exception\GlobalExceptionHandler.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\AnomalyApplication.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\model\AnomalyAlert.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\controller\AnomalyController.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\dto\AnomalyAlertDto.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\repository\AnomalyAlertRepository.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\service\AnomalyService.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\exception\AnomalyNotFoundException.java
+C:\Users\user\Downloads\sidibeweb\eco-stream\anomaly-service\src\main\java\com\ecostream\anomaly\model\SeverityLevel.java

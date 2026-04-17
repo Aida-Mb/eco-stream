@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< HEAD
         <module name="api-gateway" />
         <module name="config-server" />
         <module name="anomaly-service" />
@@ -51,6 +52,15 @@
           <entry name="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.5.0.Final/jboss-logging-3.5.0.Final.jar" />
         </processorPath>
         <module name="ingestion-service" />
+=======
+        <module name="config-server" />
+        <module name="simulator-service" />
+        <module name="api-gateway" />
+        <module name="anomaly-service" />
+        <module name="eureka-server" />
+        <module name="ingestion-service" />
+        <module name="billing-service" />
+>>>>>>> b6a2c0ec48237a5326208a3973459b78fef1790f
       </profile>
     </annotationProcessing>
   </component>
