@@ -3,6 +3,3 @@ spring:
     name: ingestion-service
   config:
     import: "configserver:http://localhost:8888"
-  jpa:
-    hibernate:
-      ddl-auto: create-drop

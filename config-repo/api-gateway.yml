@@ -9,19 +9,27 @@ spring:
         - id: simulator-service
           uri: lb://simulator-service
           predicates:
-            - Path=/api/simulator/**
+            - Path=/simulator/**
+          filters:
+            - StripPrefix=1
         - id: ingestion-service
           uri: lb://ingestion-service
           predicates:
-            - Path=/api/ingest/**
+            - Path=/ingest/**
+          filters:
+            - StripPrefix=1
         - id: billing-service
           uri: lb://billing-service
           predicates:
-            - Path=/api/billing/**
+            - Path=/billing/**
+          filters:
+            - StripPrefix=1
         - id: anomaly-service
           uri: lb://anomaly-service
           predicates:
-            - Path=/api/anomaly/**
+            - Path=/anomaly/**
+          filters:
+            - StripPrefix=1
 eureka:
   client:
     serviceUrl:
