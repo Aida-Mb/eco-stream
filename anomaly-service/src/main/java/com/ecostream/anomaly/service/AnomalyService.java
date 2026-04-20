@@ -22,10 +22,10 @@ public class AnomalyService {
 
     private final AnomalyAlertRepository repository;
 
-    @Value("${anomaly.threshold.high:1000.0}")
+    @Value("${anomaly.threshold.high:100.0}")
     private double highThreshold;
 
-    @Value("${anomaly.threshold.medium:500.0}")
+    @Value("${anomaly.threshold.medium:50.0}")
     private double mediumThreshold;
 
     /**
