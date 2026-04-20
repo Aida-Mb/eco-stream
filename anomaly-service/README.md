@@ -25,7 +25,7 @@ POST http://localhost:8084/analyze
 ```json
 {
   "meterId": "METER-001",
-  "consumption": 200.0,
+  "consumption": 2.0,
   "timestamp": "2024-06-01T10:00:00"
 }
 ```
@@ -35,7 +35,7 @@ Réponse attendue :
 {
   "severityLevel": "NORMAL",
   "anomalyDetected": false,
-  "message": "Consommation normale : 200.00 kWh"
+  "message": "Consommation normale : 2.00 kWh"
 }
 ```
 
@@ -52,7 +52,7 @@ POST http://localhost:8084/analyze
 ```json
 {
   "meterId": "METER-001",
-  "consumption": 750.0,
+  "consumption": 11.0,
   "timestamp": "2024-06-01T14:00:00"
 }
 ```
@@ -62,7 +62,7 @@ Réponse attendue :
 {
   "severityLevel": "MEDIUM",
   "anomalyDetected": true,
-  "message": "Consommation ÉLEVÉE : 750.00 kWh dépasse le seuil moyen de 500 kWh"
+  "message": "Consommation ÉLEVÉE : 11.00 kWh dépasse le seuil moyen de 500 kWh"
 }
 ```
 
@@ -77,7 +77,7 @@ POST http://localhost:8084/analyze
 ```json
 {
   "meterId": "METER-002",
-  "consumption": 1500.0,
+  "consumption": 15.0,
   "timestamp": "2024-06-01T20:00:00"
 }
 ```
@@ -87,7 +87,7 @@ Réponse attendue :
 {
   "severityLevel": "HIGH",
   "anomalyDetected": true,
-  "message": "Consommation CRITIQUE : 1500.00 kWh dépasse le seuil haut de 1000 kWh"
+  "message": "Consommation CRITIQUE : 15.00 kWh dépasse le seuil haut de 1000 kWh"
 }
 ```
 
@@ -168,8 +168,8 @@ Réponse attendue :
 
 Configurables dans `application.yml` sans recompiler.
 
-| Niveau | Condition | Persisté ? |
-|---|---|---|
-| ✅ NORMAL | `consumption < 500 kWh` | Non |
-| 🟡 MEDIUM | `500 ≤ consumption < 1000 kWh` | Oui |
-| 🔴 HIGH | `consumption ≥ 1000 kWh` | Oui |
+| Niveau | Condition                   | Persisté ? |
+|---|-----------------------------|---|
+| ✅ NORMAL | `consumption < 5 kWh`       | Non |
+| 🟡 MEDIUM | `500 ≤ consumption < 9 kWh` | Oui |
+| 🔴 HIGH | `consumption ≥ 14 kWh`      | Oui |
