@@ -779,7 +779,7 @@
     // Readings
     async function loadReadings() {
         try {
-            const res = await fetch(`${API}/ingest/readings?page=0&size=20`);
+            const res = await fetch(`${API}/ingestion/readings?page=0&size=20`);
             if (!res.ok) throw new Error();
             const data = await res.json();
             const items = data.content || data || [];
@@ -851,7 +851,7 @@
     // Anomalies
     async function loadAnomalies() {
         try {
-            const res = await fetch(`${API}/anomaly?page=0&size=20`);
+            const res = await fetch(`${API}/anomaly/alerts?page=0&size=20`);
             if (!res.ok) throw new Error();
             const data = await res.json();
             const items = data.content || data || [];
@@ -869,7 +869,7 @@
         <td style="color:var(--text2);font-size:11px">#${a.id}</td>
         <td class="meter-id">${a.meterId}</td>
         <td class="consumption-val">${(a.consumption || 0).toFixed(2)} kWh</td>
-        <td><span class="anomaly-badge anomaly-${a.severity || 'HIGH'}">${a.severity || 'HIGH'}</span></td>
+        <td><span class="anomaly-badge anomaly-${a.severityLevel || 'HIGH'}">${a.severityLevel || 'HIGH'}</span></td>
         <td style="color:var(--text2);font-size:11px">${fmtDate(a.detectedAt || a.timestamp)}</td>
       </tr>
     `).join('');

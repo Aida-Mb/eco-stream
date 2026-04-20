@@ -21,7 +21,7 @@ spring:
         - id: ingestion-service
           uri: lb://ingestion-service
           predicates:
-            - Path=/ingest/**
+            - Path=/ingestion/**
           filters:
             - StripPrefix=1
         - id: billing-service
