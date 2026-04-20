@@ -7,9 +7,13 @@ import com.ecostream.billing.service.BillingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @Slf4j
@@ -42,6 +46,18 @@ public class BillingController {
             @PathVariable String meterId) {
 
         List<BillResponseDTO> bills = billingService.getBillsByMeterId(meterId);
+        return ResponseEntity.ok(bills);
+    }
+
+    // avoir toutes les factures
+
+    @GetMapping("/bills")
+    public ResponseEntity<Page<BillResponseDTO>> getAllBills(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("calculatedAt").descending());
+        Page<BillResponseDTO> bills = billingService.getAllBills(pageable);
         return ResponseEntity.ok(bills);
     }
 

@@ -5,6 +5,14 @@ spring:
     name: api-gateway
   config:
     import: "configserver:http://localhost:8888"
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
 jwt:
   secret: ecostream-secret-key-must-be-at-least-256-bits-long
 management:
@@ -12,3 +20,8 @@ management:
     web:
       exposure:
         include: "*"
+
+
+
+
+

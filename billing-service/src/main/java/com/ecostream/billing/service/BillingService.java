@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -100,5 +102,10 @@ public class BillingService {
                 .timestamp(bill.getTimestamp())
                 .calculatedAt(bill.getCalculatedAt())
                 .build();
+    }
+
+    public Page<BillResponseDTO> getAllBills(Pageable pageable) {
+        return billRepository.findAll(pageable)
+                .map(this::toDTO);
     }
 }

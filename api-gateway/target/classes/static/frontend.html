@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoStream — Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f7f2;
+            --bg2: #ffffff;
+            --bg3: #e8f5ed;
+            --green: #0a5c36;
+            --green2: #0d7a48;
+            --green3: #d4ede0;
+            --amber: #b45309;
+            --red: #dc2626;
+            --blue: #0369a1;
+            --text: #0f2d1e;
+            --text2: #4a7c5e;
+            --border: rgba(10,92,54,0.15);
+            --font-display: 'Syne', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Subtle dot grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                    radial-gradient(circle, rgba(10,92,54,0.08) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Soft green glow top */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 700px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(10,92,54,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--green);
+            border: 1px solid var(--green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 11px;
+            color: var(--text2);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 6px rgba(10,92,54,0.5);
+            animation: pulse 2s infinite;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .time-display {
+            font-size: 12px;
+            color: var(--green);
+            font-family: var(--font-mono);
+        }
+
+        /* Simulator Control Panel */
+        .simulator-panel {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulator-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            opacity: 0.6;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .panel-title {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text2);
+        }
+
+        .sim-status {
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .sim-status.running {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            color: var(--green);
+        }
+
+        .sim-status.stopped {
+            background: rgba(255,68,68,0.1);
+            border: 1px solid rgba(255,68,68,0.3);
+            color: var(--red);
+        }
+
+        .sim-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            color: var(--text2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .input-group input {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--font-mono),sans-serif;
+            font-size: 14px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px rgba(0,255,136,0.1);
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-mono),serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .btn:active { transform: scale(0.97); }
+
+        .btn-start {
+            background: var(--green);
+            color: #fff;
+        }
+
+        .btn-start:hover { background: var(--green2); box-shadow: 0 4px 16px rgba(10,92,54,0.3); }
+
+        .btn-stop {
+            background: transparent;
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+
+        .btn-stop:hover { background: rgba(255,68,68,0.1); }
+
+        /* Stats row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 4px rgba(10,92,54,0.06);
+        }
+
+        .stat-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(10,92,54,0.12); }
+
+        .stat-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text2);
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--text);
+        }
+
+        .stat-value.green { color: var(--green); }
+        .stat-value.amber { color: var(--amber); }
+        .stat-value.red { color: var(--red); }
+        .stat-value.blue { color: var(--blue); }
+
+        .stat-sub {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 6px;
+        }
+
+        /* Main grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .section-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(10,92,54,0.07);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text2);
+        }
+
+        .section-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text2);
+            font-family: var(--font-mono);
+        }
+
+        .btn-refresh {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 1px;
+            transition: all 0.15s;
+        }
+
+        .btn-refresh:hover { border-color: var(--green); color: var(--green); }
+
+        .table-wrap {
+            overflow-x: auto;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        thead th {
+            padding: 10px 16px;
+            text-align: left;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text2);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--bg3);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(10,92,54,0.06);
+            transition: background 0.1s;
+        }
+
+        tbody tr:hover { background: rgba(10,92,54,0.04); }
+
+        tbody td {
+            padding: 10px 16px;
+            color: var(--text);
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        .meter-id {
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .consumption-val {
+            color: var(--blue);
+        }
+
+        .anomaly-badge {
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .anomaly-HIGH {
+            background: rgba(220,38,38,0.1);
+            border: 1px solid rgba(220,38,38,0.3);
+            color: var(--red);
+        }
+
+        .anomaly-MEDIUM {
+            background: rgba(180,83,9,0.1);
+            border: 1px solid rgba(180,83,9,0.3);
+            color: var(--amber);
+        }
+
+        .anomaly-LOW {
+            background: rgba(3,105,161,0.1);
+            border: 1px solid rgba(3,105,161,0.3);
+            color: var(--blue);
+        }
+
+        .tariff-PEAK {
+            color: var(--amber);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tariff-OFF_PEAK {
+            color: var(--blue);
+            font-size: 11px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text2);
+            font-size: 12px;
+        }
+
+        .empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.4; }
+
+        /* Loading */
+        .loading {
+            padding: 30px;
+            text-align: center;
+            color: var(--text2);
+            font-size: 12px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-top-color: var(--green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Chart area */
+        .chart-section {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+
+        .chart-inner {
+            padding: 20px 24px;
+        }
+
+        #consumptionChart {
+            width: 100%;
+            height: 160px;
+            display: block;
+        }
+
+        /* Anomaly section full width */
+        .full-section {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 12px;
+            color: var(--text);
+            z-index: 999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s;
+            max-width: 300px;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { border-color: rgba(0,255,136,0.4); }
+        .toast.error { border-color: rgba(255,68,68,0.4); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg3); }
+        ::-webkit-scrollbar-thumb { background: rgba(10,92,54,0.2); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(10,92,54,0.4); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-card, .stat-card, .simulator-panel, .chart-section, .full-section {
+            animation: fadeIn 0.4s ease both;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <h1>Eco<span>Stream</span></h1>
+        </div>
+        <div class="status-bar">
+            <span><span class="status-dot"></span>GATEWAY :8080</span>
+            <span class="time-display" id="clock">--:--:--</span>
+        </div>
+    </header>
+
+    <!-- Simulator Panel -->
+    <div class="simulator-panel">
+        <div class="panel-header">
+            <span class="panel-title">⚙ Simulator Control</span>
+            <span class="sim-status stopped" id="simStatus">STOPPED</span>
+        </div>
+        <div class="sim-controls">
+            <div class="input-group">
+                <label>Nombre de compteurs</label>
+                <input type="number" id="meterCount" value="5" min="1" max="20">
+            </div>
+            <div class="input-group">
+                <label>Intervalle (ms)</label>
+                <input type="number" id="intervalMs" value="2000" min="500" step="500">
+            </div>
+            <button class="btn btn-start" onclick="startSimulator()">▶ START</button>
+            <button class="btn btn-stop" onclick="stopSimulator()">■ STOP</button>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Readings total</div>
+            <div class="stat-value green" id="statReadings">—</div>
+            <div class="stat-sub">mesures reçues</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Factures calculées</div>
+            <div class="stat-value blue" id="statBills">—</div>
+            <div class="stat-sub">ce jour</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Anomalies</div>
+            <div class="stat-value red" id="statAnomalies">—</div>
+            <div class="stat-sub">détectées</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Conso moyenne</div>
+            <div class="stat-value amber" id="statAvgConso">—</div>
+            <div class="stat-sub">kWh / lecture</div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-section">
+        <div class="section-header">
+            <span class="section-title">📈 Consommation en temps réel</span>
+            <button class="btn-refresh" onclick="loadReadings()">↻ Refresh</button>
+        </div>
+        <div class="chart-inner">
+            <canvas id="consumptionChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Readings + Bills -->
+    <div class="main-grid">
+        <!-- Readings -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title">⚡ Dernières mesures</span>
+                <button class="btn-refresh" onclick="loadReadings()">↻</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Compteur</th>
+                        <th>Conso (kWh)</th>
+                        <th>Heure</th>
+                    </tr>
+                    </thead>
+                    <tbody id="readingsBody">
+                    <tr><td colspan="4"><div class="loading"><span class="spinner"></span>Chargement...</div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bills -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title">💳 Dernières factures</span>
+                <button class="btn-refresh" onclick="loadBills()">↻</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Compteur</th>
+                        <th>Conso</th>
+                        <th>Coût (FCFA)</th>
+                        <th>Tarif</th>
+                    </tr>
+                    </thead>
+                    <tbody id="billsBody">
+                    <tr><td colspan="4"><div class="loading"><span class="spinner"></span>Chargement...</div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Anomalies -->
+    <div class="full-section">
+        <div class="section-header">
+            <span class="section-title">🚨 Anomalies détectées</span>
+            <button class="btn-refresh" onclick="loadAnomalies()">↻ Refresh</button>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Compteur</th>
+                    <th>Consommation</th>
+                    <th>Sévérité</th>
+                    <th>Détectée le</th>
+                </tr>
+                </thead>
+                <tbody id="anomaliesBody">
+                <tr><td colspan="5"><div class="loading"><span class="spinner"></span>Chargement...</div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+    const API = 'http://localhost:8080';
+    let chartData = [];
+    let autoRefresh = null;
+
+    // Clock
+    setInterval(() => {
+        document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR');
+    }, 1000);
+
+    // Toast
+    function showToast(msg, type='success') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = `toast ${type} show`;
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Format date
+    function fmtDate(str) {
+        if (!str) return '—';
+        try {
+            return new Date(str).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        } catch { return str; }
+    }
+
+    // Simulator
+    async function startSimulator() {
+        const meterCount = parseInt(document.getElementById('meterCount').value);
+        const intervalMs = parseInt(document.getElementById('intervalMs').value);
+        try {
+            const res = await fetch(`${API}/simulator/start`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ meterCount, intervalMs })
+            });
+            if (!res.ok) throw new Error(await res.text());
+            const data = await res.json();
+            updateSimStatus(data.status);
+            showToast(`✓ Simulation démarrée — ${meterCount} compteurs`, 'success');
+            startAutoRefresh();
+        } catch (e) {
+            showToast('Erreur démarrage: ' + e.message, 'error');
+        }
+    }
+
+    async function stopSimulator() {
+        try {
+            const res = await fetch(`${API}/simulator/stop`, { method: 'POST' });
+            if (!res.ok) throw new Error(await res.text());
+            const data = await res.json();
+            updateSimStatus(data.status);
+            showToast('■ Simulation arrêtée', 'error');
+            stopAutoRefresh();
+        } catch (e) {
+            showToast('Erreur arrêt: ' + e.message, 'error');
+        }
+    }
+
+    function updateSimStatus(status) {
+        const el = document.getElementById('simStatus');
+        el.textContent = status;
+        el.className = `sim-status ${status === 'RUNNING' ? 'running' : 'stopped'}`;
+    }
+
+    async function loadSimStatus() {
+        try {
+            const res = await fetch(`${API}/simulator/status`);
+            if (res.ok) {
+                const data = await res.json();
+                updateSimStatus(data.status || 'STOPPED');
+            }
+        } catch {}
+    }
+
+    // Readings
+    async function loadReadings() {
+        try {
+            const res = await fetch(`${API}/ingest/readings?page=0&size=20`);
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            const items = data.content || data || [];
+
+            // Update stats
+            document.getElementById('statReadings').textContent = data.totalElements || items.length || '0';
+
+            if (items.length === 0) {
+                document.getElementById('readingsBody').innerHTML =
+                    `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">📊</div>Aucune mesure</div></td></tr>`;
+                return;
+            }
+
+            // Stats calc
+            const avg = items.reduce((s, r) => s + (r.consumption || 0), 0) / items.length;
+            document.getElementById('statAvgConso').textContent = avg.toFixed(1);
+
+            // Chart data
+            chartData = items.slice(0, 20).reverse().map(r => ({
+                label: r.meterId || '',
+                value: r.consumption || 0
+            }));
+            drawChart();
+
+            document.getElementById('readingsBody').innerHTML = items.slice(0, 15).map(r => `
+      <tr>
+        <td style="color:var(--text2);font-size:11px">#${r.id}</td>
+        <td class="meter-id">${r.meterId}</td>
+        <td class="consumption-val">${(r.consumption || 0).toFixed(2)}</td>
+        <td style="color:var(--text2);font-size:11px">${fmtDate(r.receivedAt || r.timestamp)}</td>
+      </tr>
+    `).join('');
+        } catch (e) {
+            document.getElementById('readingsBody').innerHTML =
+                `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">⚠</div>Service indisponible</div></td></tr>`;
+        }
+    }
+
+    // Bills
+    async function loadBills() {
+        try {
+            const res = await fetch(`${API}/billing/bills?page=0&size=15`);
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            const items = data.content || data || [];
+
+            document.getElementById('statBills').textContent = data.totalElements || items.length || '0';
+
+            if (items.length === 0) {
+                document.getElementById('billsBody').innerHTML =
+                    `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">💳</div>Aucune facture</div></td></tr>`;
+                return;
+            }
+
+            document.getElementById('billsBody').innerHTML = items.slice(0, 15).map(b => `
+      <tr>
+        <td class="meter-id">${b.meterId}</td>
+        <td class="consumption-val">${(b.consumption || 0).toFixed(2)}</td>
+        <td style="color:var(--amber);font-weight:700">${(b.cost || 0).toLocaleString('fr-FR')} F</td>
+        <td><span class="tariff-${b.tariffType}">${b.tariffType || '—'}</span></td>
+      </tr>
+    `).join('');
+        } catch {
+            document.getElementById('billsBody').innerHTML =
+                `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">⚠</div>Service indisponible</div></td></tr>`;
+        }
+    }
+
+    // Anomalies
+    async function loadAnomalies() {
+        try {
+            const res = await fetch(`${API}/anomaly?page=0&size=20`);
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            const items = data.content || data || [];
+
+            document.getElementById('statAnomalies').textContent = data.totalElements || items.length || '0';
+
+            if (items.length === 0) {
+                document.getElementById('anomaliesBody').innerHTML =
+                    `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">✅</div>Aucune anomalie détectée</div></td></tr>`;
+                return;
+            }
+
+            document.getElementById('anomaliesBody').innerHTML = items.slice(0, 20).map(a => `
+      <tr>
+        <td style="color:var(--text2);font-size:11px">#${a.id}</td>
+        <td class="meter-id">${a.meterId}</td>
+        <td class="consumption-val">${(a.consumption || 0).toFixed(2)} kWh</td>
+        <td><span class="anomaly-badge anomaly-${a.severity || 'HIGH'}">${a.severity || 'HIGH'}</span></td>
+        <td style="color:var(--text2);font-size:11px">${fmtDate(a.detectedAt || a.timestamp)}</td>
+      </tr>
+    `).join('');
+        } catch {
+            document.getElementById('anomaliesBody').innerHTML =
+                `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">⚠</div>Service indisponible</div></td></tr>`;
+        }
+    }
+
+    // Mini chart
+    function drawChart() {
+        const canvas = document.getElementById('consumptionChart');
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width = canvas.offsetWidth;
+        const H = canvas.height = 160;
+
+        ctx.clearRect(0, 0, W, H);
+
+        if (!chartData.length) return;
+
+        const values = chartData.map(d => d.value);
+        const max = Math.max(...values) * 1.1 || 1;
+        const min = 0;
+        const pad = { top: 10, right: 16, bottom: 30, left: 40 };
+        const w = W - pad.left - pad.right;
+        const h = H - pad.top - pad.bottom;
+        const step = w / (values.length - 1 || 1);
+
+        // Grid lines
+        ctx.strokeStyle = 'rgba(10,92,54,0.08)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+            const y = pad.top + (h / 4) * i;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, y);
+            ctx.lineTo(W - pad.right, y);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(74,124,94,0.8)';
+            ctx.font = '9px Space Mono, monospace';
+            ctx.textAlign = 'right';
+            const val = max - (max / 4) * i;
+            ctx.fillText(val.toFixed(1), pad.left - 6, y + 3);
+        }
+
+        // Area fill
+        const gradient = ctx.createLinearGradient(0, pad.top, 0, H - pad.bottom);
+        gradient.addColorStop(0, 'rgba(10,92,54,0.18)');
+        gradient.addColorStop(1, 'rgba(10,92,54,0.01)');
+
+        ctx.beginPath();
+        values.forEach((v, i) => {
+            const x = pad.left + i * step;
+            const y = pad.top + h - ((v - min) / (max - min)) * h;
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.lineTo(pad.left + (values.length - 1) * step, H - pad.bottom);
+        ctx.lineTo(pad.left, H - pad.bottom);
+        ctx.closePath();
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // Line
+        ctx.beginPath();
+        ctx.strokeStyle = '#0a5c36';
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        values.forEach((v, i) => {
+            const x = pad.left + i * step;
+            const y = pad.top + h - ((v - min) / (max - min)) * h;
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        // Dots
+        values.forEach((v, i) => {
+            const x = pad.left + i * step;
+            const y = pad.top + h - ((v - min) / (max - min)) * h;
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = v > 50 ? '#dc2626' : '#0a5c36';
+            ctx.fill();
+        });
+    }
+
+    // Auto refresh
+    function startAutoRefresh() {
+        if (autoRefresh) clearInterval(autoRefresh);
+        autoRefresh = setInterval(() => {
+            loadReadings();
+            loadBills();
+            loadAnomalies();
+        }, 3000);
+    }
+
+    function stopAutoRefresh() {
+        if (autoRefresh) clearInterval(autoRefresh);
+        autoRefresh = null;
+    }
+
+    // Init
+    window.addEventListener('resize', drawChart);
+    loadSimStatus();
+    loadReadings();
+    loadBills();
+    loadAnomalies();
+</script>
+</body>
+</html>
