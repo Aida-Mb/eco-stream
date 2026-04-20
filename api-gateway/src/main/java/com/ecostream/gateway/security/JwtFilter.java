@@ -22,7 +22,7 @@ public class JwtFilter implements GlobalFilter, Ordered {
     @Value("${jwt.secret:ecostream-secret-key-must-be-at-least-256-bits-long}")
     private String jwtSecret;
 
-    private static final List<String> PUBLIC_PATHS = List.of("/", "/actuator/");
+    private static final List<String> PUBLIC_PATHS = List.of("/", "/actuator/", "/auth/");
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

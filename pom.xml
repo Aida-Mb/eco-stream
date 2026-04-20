@@ -23,6 +23,7 @@
         <module>ingestion-service</module>
         <module>billing-service</module>
         <module>anomaly-service</module>
+        <module>auth-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>
