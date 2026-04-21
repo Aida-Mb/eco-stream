@@ -7,10 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
-        <module name="config-server" />
-        <module name="anomaly-service" />
-        <module name="eureka-server" />
       </profile>
       <profile name="Annotation profile for eco-stream" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -19,8 +15,6 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
         </processorPath>
-        <module name="simulator-service" />
-        <module name="billing-service" />
       </profile>
       <profile name="Annotation profile for ingestion-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -49,7 +43,6 @@
           <entry name="$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.14.11/byte-buddy-1.14.11.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.5.0.Final/jboss-logging-3.5.0.Final.jar" />
         </processorPath>
-        <module name="ingestion-service" />
       </profile>
     </annotationProcessing>
   </component>
